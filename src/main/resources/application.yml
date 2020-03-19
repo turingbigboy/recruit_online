@@ -45,6 +45,8 @@ mybatis-plus:
     db-config:
       id-type: auto
       
-
+upload:
+  filePath: C:\Users\Administrator\Documents\workspace-spring-tool-suite-4-4.0.1.RELEASE\recruit_online\src\main\resources\static\
+  imagePath: /recruit-online/
   
 

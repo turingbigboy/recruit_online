@@ -46,7 +46,7 @@ public class ApiTest {
         config.setAllInOne(true);
         //生成html时加密文档名不暴露controller的名称
         config.setMd5EncryptedHtmlName(true);
-
+       
         //指定文档输出路径
         //@since 1.7 版本开始，选择生成静态html doc文档可使用该路径：DocGlobalConstants.HTML_DOC_OUT_PATH;
         config.setOutPath(DocGlobalConstants.HTML_DOC_OUT_PATH);
