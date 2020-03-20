@@ -2,11 +2,13 @@ package com.yyjj.api.vo;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.BeanUtils;
 
 import com.yyjj.db.model.Position;
+import com.yyjj.db.model.Tag;
 import com.yyjj.service.bo.PositionBO;
 
 import lombok.Getter;
@@ -25,6 +27,11 @@ import lombok.Setter;
 public class PositionVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
+    /**
+     * id
+     */
+    private Integer id;
     /**
      * 职位标题
      */
@@ -80,6 +87,10 @@ public class PositionVO implements Serializable {
      */
     private Integer hrId;
      
+    private Integer companyId;
+    private String companyName;
+    
+    private List<Tag> tags;
     public static  PositionVO newInstance( Position  position) {
         if(Objects.isNull( position)) {
   	    return null;

@@ -1,6 +1,7 @@
 package com.yyjj.api.vo;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.BeanUtils;
@@ -36,7 +37,11 @@ public class ClassifyVO implements Serializable {
      * 一级类别名称
      */
     private String name;
-     
+    
+    /**
+     * 二级类别
+     */
+    private List<SortVO> sorts;
     public static  ClassifyVO newInstance( Classify  classify) {
         if(Objects.isNull( classify)) {
   	    return null;
