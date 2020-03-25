@@ -6,9 +6,6 @@ import java.util.Objects;
 
 import org.springframework.beans.BeanUtils;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.yyjj.db.model.Resume;
 import com.yyjj.service.bo.ResumeBO;
 
@@ -28,10 +25,8 @@ import lombok.Setter;
 public class ResumeVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-
+    private UserVO user;
     /**
      * 专业能力
      */
@@ -53,10 +48,26 @@ public class ResumeVO implements Serializable {
     private String certificate;
 
     /**
+     * 最低薪资
+     */
+    private Integer salaryDown;
+
+    /**
+     * 最高薪资
+     */
+    private Integer salaryUp;
+
+    /**
      * 就职期望
      */
-    @TableField("jobDesire")
     private String jobDesire;
+
+    /**
+     * 阅读量
+     */
+    private Integer hits;
+
+    private Integer state;
 
     /**
      * 是否发布
@@ -67,7 +78,7 @@ public class ResumeVO implements Serializable {
      * 用户id
      */
     private Integer userId;
-
+    private String title;
     /**
      * 发布时间
      */

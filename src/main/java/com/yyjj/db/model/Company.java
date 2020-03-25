@@ -1,9 +1,9 @@
 package com.yyjj.db.model;
 
+import java.io.Serializable;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
 
 /**
  * <p>
@@ -26,10 +26,9 @@ public class Company implements Serializable {
     /**
      * 公司名称
      */
-    @TableField("companyName")
+  
     private String companyName;
 
-    @TableField("companyLogo")
     private Integer companyLogo;
 
     /**
@@ -45,7 +44,7 @@ public class Company implements Serializable {
     /**
      * 公司代码
      */
-    @TableField("companyCode")
+
     private String companyCode;
 
     public Integer getId() {

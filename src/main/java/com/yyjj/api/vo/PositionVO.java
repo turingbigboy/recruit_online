@@ -8,7 +8,9 @@ import java.util.Objects;
 import org.springframework.beans.BeanUtils;
 
 import com.yyjj.db.model.Position;
+import com.yyjj.db.model.Sort;
 import com.yyjj.db.model.Tag;
+import com.yyjj.db.model.User;
 import com.yyjj.service.bo.PositionBO;
 
 import lombok.Getter;
@@ -32,6 +34,8 @@ public class PositionVO implements Serializable {
      * id
      */
     private Integer id;
+    
+    private Boolean mark;
     /**
      * 职位标题
      */
@@ -91,6 +95,12 @@ public class PositionVO implements Serializable {
     private String companyName;
     
     private List<Tag> tags;
+    
+    private CompanyVO company;
+    private HrVO hr;
+    private List<CommentVO> reviews;
+    private List<Sort> sorts;
+    private User user;
     public static  PositionVO newInstance( Position  position) {
         if(Objects.isNull( position)) {
   	    return null;

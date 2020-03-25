@@ -1,20 +1,16 @@
 package com.yyjj.api.vo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-
-import com.yyjj.service.bo.DropBoxBO;
-import com.yyjj.db.model.DropBox;
-import lombok.Getter;
-import lombok.Setter;
-
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.BeanUtils;
 
-import java.io.Serializable;
+import com.yyjj.db.model.DropBox;
+import com.yyjj.service.bo.DropBoxBO;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * <p>
@@ -34,17 +30,19 @@ public class DropBoxVO implements Serializable {
      * 投递箱
      */
     private Integer id;
-
+    
+    private Integer userId;
     /**
      * 职位id
      */
     private Integer positionId;
-
+    
+    private PositionVO position;
     /**
      * 简历id
      */
     private Integer resumeId;
-
+    private LocalDateTime createTime;
     /**
      * 投递状态 0:未审阅 1：已阅读 
      */

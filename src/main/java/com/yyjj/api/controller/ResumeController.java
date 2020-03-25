@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yyjj.api.vo.ResumeVO;
+import com.yyjj.api.vo.UserVO;
 import com.yyjj.db.model.Resume;
 import com.yyjj.domain.context.AjaxResult;
 import com.yyjj.domain.service.BasePage;
 import com.yyjj.service.service.ResumeService;
+import com.yyjj.service.service.UserService;
 
 
 /**
@@ -34,6 +36,9 @@ public class ResumeController {
 		
 	@Autowired
 	ResumeService resumeService;
+	
+	@Autowired
+	UserService userService;
 	
 	/**
 	 *分页查询简历
@@ -51,7 +56,11 @@ public class ResumeController {
 	 * @return
 	 */
 	@GetMapping("/{id:\\d+}")
-	public AjaxResult<ResumeVO> Detail(@PathVariable Integer id) {		
+	public AjaxResult<ResumeVO> Detail(@PathVariable Integer id) {	
+		Resume resume = resumeService.getById(id);
+		resume.setHits(resume.getHits()+1);
+		resumeService.updateById(resume);
+		
 		return AjaxResult.success("",convert(resumeService.getById(id)));
 	}
 	
@@ -114,6 +123,7 @@ public class ResumeController {
 	private ResumeVO convert(Resume resume){
 			ResumeVO vo = ResumeVO.newInstance(resume);
 			//TODO
+			vo.setUser(UserVO.newInstance(userService.getById(vo.getUserId())));
 			return vo;
 	}
 	

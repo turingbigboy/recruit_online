@@ -2,6 +2,9 @@ package com.yyjj.api.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yyjj.api.vo.HrMakeVO;
+import com.yyjj.db.model.Hr;
 import com.yyjj.db.model.HrMake;
 import com.yyjj.domain.context.AjaxResult;
 import com.yyjj.domain.service.BasePage;
@@ -55,7 +59,26 @@ public class HrMakeController {
 		return AjaxResult.success("",convert(hrmakeService.getById(id)));
 	}
 	
+	/**
+	 * 用户是否收藏简历
+	 * @param id Userid
+	 * @return
+	 */
 	
+	@GetMapping("/is_mark/{resumeId:\\d+}")
+	public AjaxResult<HrMakeVO> Detail(@PathVariable Integer resumeId,HttpServletRequest request) {
+		Hr hr = (Hr) request.getSession().getAttribute("hr");
+		if(Objects.isNull(hr)) {
+			return AjaxResult.success("",false);
+		}
+		HrMake one = hrmakeService.lambdaQuery().eq(HrMake::getResumeId, resumeId)
+			.eq(HrMake::getId, hr.getId()).one();
+		if(Objects.nonNull(one)) {
+			return AjaxResult.success("",true);
+		}else {
+			return AjaxResult.success("",false);
+		}
+	}
 	/**
 	 * 新增hr收藏简历
 	 * @param vo

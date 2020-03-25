@@ -46,6 +46,16 @@ public class SortController {
 	}
 	
 	/**
+	 * 根据一级分类查询二级分类
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("classify/{id:\\d+}")
+	public AjaxResult<Sort> getListByclassifyId(@PathVariable Integer id) {
+		List<Sort> sorts = sortService.lambdaQuery().eq(Sort::getClassId, id).list();
+		return AjaxResult.success("", sorts);
+	}
+	/**
 	 *二级分类详情
 	 * @param id Sortid
 	 * @return

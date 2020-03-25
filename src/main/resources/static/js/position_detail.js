@@ -1,154 +1,164 @@
-var href = window.location.href;
-
-var box = new Vue({
-    el: '#position_content',
-    data: {
-        position: [{}],
-        department: [{}],
-        company: [{}],
-        category: [{}],
-        reviews: [{}]
-    },
-    created: function () {
-        this.$nextTick(function () {
-            $.ajax({
-                url: href + "/1",
-                type: "post",
-                dataType: "json",
-                success: function (msg) {
-                    box.position = msg.position;
-                    box.department = msg.department;
-                    box.company = msg.company;
-                    box.category = msg.category;
-
-                    console.log(msg);
-
-                    box.reviews.pop();
-                    $(msg.comList.list).each(function (key, val) {
-                        box.reviews.push({
-                            userName: val.nickname,
-                            reviewDetail: val.content.replace(/<[^>]+>/g,"")
-                        });
-                    });
-
-                    if (msg.user != null) {
-                        header.type = 'user';
-                        header.person.user = msg.user;
-                    } else if (msg.hr != null) {
-                        header.type = 'hr';
-                        header.person.hr = msg.hr;
-                    }
-                },
-                error: function (msg) {
-                    console.log(msg);
-                }
-            });
-        });
-    }
-
-});
-
-
-var favorFlag;
-$(document).ready(function () {
-    $.ajax({
-        url: "/user/favorOrNot/" + posId,
-        type: "get",
-        dataType: "json",
-        success: function (msg) {
-            if (msg == "0") {
-                $("#favor_tag").css("background-color", "#3992d6").css("border", "1px solid #3992d6").text("收藏");
-                favorFlag = 0;
-            } else {
-                $("#favor_tag").css("background-color", "#707070").css("border", "1px solid #707070").text("取消收藏");
-                favorFlag = 1;
-            }
+var vue=new Vue({
+	data:{
+		//预约接口
+		Url:"/recruit-online/position",
+		entity:{
+			
+		},
+		 position:{
+			
+		},
+		category:[],
+		company:{},
+		department:{},
+		reviews:[],     
+        user: {},
+        type:"user",
+        addComment:{
+        	content:"",
+        	type:""
         },
-        error: function (msg) {
-            console.log(msg);
-        }
-    });
-
-});
-
-var index = href.lastIndexOf("\/");
-var posId = href.substr(index + 1, href.length);
-// document.getElementById("apply_tag").setAttribute("href","http://localhost:8080/user/apply/"+posId);
-$("#apply_tag").attr("href", "/user/apply/" + posId);
-$("#favor_tag").click(function () {
-    if (favorFlag == 0) {
-        $.ajax({
-            url: "/user/favor/" + posId,
-            type: "get",
-            dataType: "text",
-            success: function (msg) {
-                if (msg == "success") {
-                    $("#favor_tag").css("background-color", "#707070").css("border", "1px solid #707070").text("取消收藏");
-                    favorFlag = 1;
-                } else {
-                    console.log(msg);
-                }
-            },
-            error: function (msg) {
-                console.log(msg);
-            }
-        });
-        window.location.reload();
-    } else {
-        $.ajax({
-            url: "/user/disfavor/" + posId,
-            type: "get",
-            dataType: "text",
-            success: function (msg) {
-                if (msg == "success") {
-                    $("#favor_tag").css("background-color", "#3992d6").css("border", "1px solid #3992d6").text("收藏");
-                    favorFlag = 0;
-                } else {
-                    console.log(msg)
-                }
-            },
-            error: function (msg) {
-                console.log(msg);
-            }
-        });
-
-    }
-});
-
-//隐藏表单项提交
-$("#posId").val(posId);
-
-
-/**
- * 评论ajax表单提交
- */
-// function comPublish() {
-//
-//     var type = $("#comment_star").val();
-//     type = type > 0 ? type : 1;
-//     var content = layedit.getText(index);
-//     var input = {
-//         posId: posId,
-//         type: type,
-//         content: content
-//     }
-//
-//     alert(JSON.stringify(input));
-//
-//     $.ajax({
-//         type: "post",
-//         url: "http://localhost:8080/user/comment",
-//         data: input,
-//         dataType: "text",
-//         success: function (msg) {
-//             console.log(msg);
-//         },
-//         error: function (msg) {
-//             console.log(msg);
-//         }
-//     });
-//
-//     window.location.href(href);
-// }
-
-
+        drop:{},
+        mark:{},
+        isMark:""
+	},
+	methods:{
+		marks:function(){
+			if(this.user == null || this.user.userId==null){
+				alert("请前往登录")
+				location.href="/recruit-online/dist/user/user_login.html";
+			}
+			this.mark.userId=this.user.userId;
+			this.mark.positionId = this.position.id;
+			axios.post("/recruit-online/usermake",
+					this.mark).then(function(res){					
+				alert(res.data.msg);
+				console.log(res);
+			}).catch(function(err){
+				alert(err);
+			})
+		},
+		unmarks:function(){
+			if(this.user == null || this.user.userId==null){
+				alert("请前往登录")
+				location.href="/recruit-online/dist/user/user_login.html";
+			}
+			var self = this;
+			this.mark.userId=this.user.userId;
+			this.mark.positionId = this.position.id;
+			axios.delete("/recruit-online/usermake/unmake?userId="+this.user.userId
+					+"&positionId="+this.position.id
+					).then(function(res){						
+						axios.get("/recruit-online/position/"+self.position.id
+						).then(function(res){
+							console.log(res);
+							self.position = res.data.data;
+							self.category =  res.data.data.sorts;
+							self.company = res.data.data.company;
+							self.department = res.data.data.hr;										
+							self.reviews = res.data.data.reviews;
+							self.seartchMarks();
+						}).catch(function(err){
+							alert(err);
+					});
+			}).catch(function(err){
+				alert(err);
+			})
+		},
+		seartchMarks:function(){
+			var self = this;
+			axios.get("/recruit-online/usermake/is_mark/"+this.position.id
+			).then(function(res){
+				console.log(res);
+				//alert(res.data.data);
+				 if(res.data.data){
+					 self.isMark=1
+				}else{
+					 self.isMark=0
+				}
+			}).catch(function(err){
+				alert(err);
+			}) 
+		},
+		dropBox:function(){
+			if(this.user == null || this.user.userId==null){
+				alert("请前往登录")
+				location.href="/recruit-online/dist/user/user_login.html";
+			}
+			this.drop.userId=this.user.userId;
+			this.drop.positionId = this.position.id;
+			axios.post("/recruit-online/dropbox",
+					this.drop).then(function(res){					
+				alert(res.data.msg);
+				console.log(res);
+			}).catch(function(err){
+				alert(err);
+			})
+		},
+		addComments:function(){
+			var self=this;
+			self.addComment.userId=this.user.userId;
+			self.addComment.positionId = this.position.id;
+			self.addComment.content = $("#review_editor").val(); 
+			self.addComment.type = $("#comment_star").val();
+			console.log(this.addComment);
+			axios.post("/recruit-online/comment",this.addComment).then(function(res){					
+				console.log(res);
+				axios.get("/recruit-online/position/"+self.position.id
+				).then(function(res){
+					console.log(res);
+					self.position = res.data.data;
+					self.category =  res.data.data.sorts;
+					self.company = res.data.data.company;
+					self.department = res.data.data.hr;										
+					self.reviews = res.data.data.reviews;
+					self.seartchMarks();
+				}).catch(function(err){
+					alert(err);
+			}) 
+			}).catch(function(err){
+				alert(err);
+			})
+		},
+		present:function(){
+			  var self=this;
+			axios.get("/recruit-online/user/present"
+			).then(function(res){
+				console.log(res);
+				self.user = res.data.data;
+			}).catch(function(err){
+				alert(err);
+		}) 
+		},
+		queryById:function(){  
+				var url = location.search; //获取url中"?"符后的字串 ('?modFlag=business&role=1')  
+				var theRequest = new Object();  
+				if ( url.indexOf( "?" ) != -1 ) {  
+				  var str = url.substr( 1 ); //substr()方法返回从参数值开始到结束的字符串；  
+				  var strs = str.split( "&" );  
+				  var param = strs[ 0 ].split( "=" )[ 1 ]
+				  var self=this;
+					axios.get("/recruit-online/position/"+param
+					).then(function(res){
+						console.log(res);
+						self.position = res.data.data;
+						self.category =  res.data.data.sorts;
+						self.company = res.data.data.company;
+						self.department = res.data.data.hr;						
+						self.reviews = res.data.data.reviews;
+						self.seartchMarks();
+					}).catch(function(err){
+						alert(err);
+				}) 
+			}
+		}
+	
+	},
+	mixins:[entityMixin]
+	,
+	created:function(){	
+		this.queryById();
+		this.present();
+		
+	}	
+})

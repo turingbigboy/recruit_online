@@ -3,6 +3,7 @@ package com.yyjj.db.model;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -53,8 +54,17 @@ public class Hr implements Serializable {
      * 所属公司
      */
     private Integer companyId;
+    
+    private LocalDateTime createTime;
+    public LocalDateTime getCreateTime() {
+		return createTime;
+	}
 
-    public Integer getId() {
+	public void setCreateTime(LocalDateTime createTime) {
+		this.createTime = createTime;
+	}
+
+	public Integer getId() {
         return id;
     }
 

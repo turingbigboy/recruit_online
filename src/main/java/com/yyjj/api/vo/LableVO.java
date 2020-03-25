@@ -6,6 +6,7 @@ import java.util.Objects;
 import org.springframework.beans.BeanUtils;
 
 import com.yyjj.db.model.Lable;
+import com.yyjj.db.model.Sort;
 import com.yyjj.service.bo.LableBO;
 
 import lombok.Getter;
@@ -29,7 +30,8 @@ public class LableVO implements Serializable {
     private Integer lableClassId;
 
     private Integer lableSortId;
-
+    
+    private Sort sort;
     private Integer positionId;
      
     public static  LableVO newInstance( Lable  lable) {

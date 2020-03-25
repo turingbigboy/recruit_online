@@ -1,20 +1,17 @@
 package com.yyjj.api.vo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-
-import com.yyjj.service.bo.CompanyBO;
-import com.yyjj.db.model.Company;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.time.LocalDateTime;
-import java.util.List;
+import java.io.Serializable;
 import java.util.Objects;
 
 import org.springframework.beans.BeanUtils;
 
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.yyjj.db.model.Company;
+import com.yyjj.service.bo.CompanyBO;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * <p>
@@ -29,7 +26,36 @@ import java.io.Serializable;
 public class CompanyVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+    /**
+     * 公司id
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
+
+    /**
+     * 公司名称
+     */
+   
+    private String companyName;
+
+
+    private Integer companyLogo;
+
+    /**
+     * 公司描述
+     */
+    private String description;
+
+    /**
+     * 公司状态
+     */
+    private Integer state;
+
+    /**
+     * 公司代码
+     */
+
+    private String companyCode;
      
     public static  CompanyVO newInstance( Company  company) {
         if(Objects.isNull( company)) {

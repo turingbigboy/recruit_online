@@ -5,7 +5,7 @@ var entityMixin={
 			pageCount:0,//总页数
 			//分页参数
 			SearchParam:{
-				pageSize:5,
+				pageSize:10,
 				page:1,
 				
 				param:{
@@ -73,6 +73,15 @@ var entityMixin={
 					alert(err);
 				})
 			},
+			//注销
+			logout:function(){
+				axios.get("/recruit-online/user/logout"
+				).then(function(res){
+					location.href="/recruit-online/dist/user/user_login.html"
+				}).catch(function(err){
+					alert(err);
+				})
+			},
 			//查询所有支持分页
 			query:function(){
 				var self=this;
@@ -111,7 +120,7 @@ var entityMixin={
 				var self=this;
 				axios.get(this.Url+"/"+id).then(function(res){
 					console.log(res);
-					self.detail=res.data.data;				
+					self.entity=res.data.data;				
 				}).catch(function(err){
 					alert(err);
 				})
@@ -119,9 +128,9 @@ var entityMixin={
 			//添加
 			save:function(){
 				var self=this;
-				axios.post(this.Url,this.addEntity).then(function(res){
+				axios.post(this.Url,this.entity).then(function(res){
 					alert(res.data.msg);
-					self.addEntity={};
+					self.entity={};
 					self.query();
 				}).catch(function(err){
 					alert(err);

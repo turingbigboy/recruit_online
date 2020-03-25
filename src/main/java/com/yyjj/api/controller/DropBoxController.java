@@ -1,5 +1,6 @@
 package com.yyjj.api.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yyjj.api.vo.DropBoxVO;
 import com.yyjj.db.model.DropBox;
+import com.yyjj.db.model.Resume;
 import com.yyjj.domain.context.AjaxResult;
 import com.yyjj.domain.service.BasePage;
 import com.yyjj.service.service.DropBoxService;
+import com.yyjj.service.service.ResumeService;
+import com.yyjj.service.service.UserService;
 
 
 /**
@@ -34,7 +38,10 @@ public class DropBoxController {
 		
 	@Autowired
 	DropBoxService dropboxService;
-	
+	@Autowired
+	UserService userService;
+	@Autowired
+	ResumeService resumeService;
 	/**
 	 * 分页投递箱列表
 	 * @param vo
@@ -64,12 +71,16 @@ public class DropBoxController {
 	 */
 	@PostMapping
 	public AjaxResult<DropBoxVO> add(@RequestBody @Validated DropBoxVO vo) {
+		Integer userId = vo.getUserId();
+		List<Resume> list = resumeService.lambdaQuery().eq(Resume::getUserId, userId).list();
+		vo.setResumeId(list.get(0).getId());
+		vo.setCreateTime(LocalDateTime.now());
 		boolean result = dropboxService.save(vo.convert());
 		if(result) {
-			return AjaxResult.success("新增成功");
+			return AjaxResult.success("投递成功");
 		}
 		
-		return AjaxResult.failed("新增失败");	
+		return AjaxResult.failed("投递失败");	
 	}
 	
 	/**

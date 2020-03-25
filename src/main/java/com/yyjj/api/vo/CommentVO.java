@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.yyjj.db.model.Comment;
+import com.yyjj.db.model.User;
 import com.yyjj.service.bo.CommentBO;
 
 import lombok.Getter;
@@ -47,9 +48,9 @@ public class CommentVO implements Serializable {
      * 评论时间
      */
     private LocalDateTime releaseTime;
-
+    
     private Integer userId;
-
+    private User user;
     /**
      * 评论职位
      */

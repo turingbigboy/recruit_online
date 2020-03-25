@@ -10,17 +10,42 @@
     <title>ZJ招聘后台管理系统 - 公司管理</title>
 
     <link rel="shortcut icon" href="favicon.ico">
-    <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-    <link href="/css/font-awesome.css?v=4.4.0" rel="stylesheet">
-    <link href="/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
-    <link href="/css/animate.css" rel="stylesheet">
-    <link href="/css/style.css?v=4.1.0" rel="stylesheet">
-
+    <link href="/recruit-online/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/recruit-online/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="/recruit-online/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="/recruit-online/css/animate.css" rel="stylesheet">
+    <link href="/recruit-online/css/style.css?v=4.1.0" rel="stylesheet">
+	<script src="/recruit-online/js/vue.min.js"></script>
+	<script src="/recruit-online/vue/plugins/vue/vuejs-paginate.js"></script>
+	<script src="/recruit-online/axios/axios.js"></script>
 </head>
 
 <body class="gray-bg">
+<div id="Box">
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row animated fadeInRight" id="company">
+    
+    <div class="col-sm-4 animated fadeInRight" v-for="company in SearchResult.rows.records">
+              <div class="contact-box">
+                        <div class="col-sm-4">
+                            <div class="text-center">
+                             <img alt="image" class="img-circle m-t-xs img-responsive" :src="'/recruit-online/img/img'+company.companyLogo+'.jpg'"> 
+                                                            <div class="m-t-xs font-bold">CTO</div> 
+                                                        </div>
+                                                    </div>
+                                                   <div class="col-sm-8">
+                                                        <h3><strong>{{company.companyName}}</strong></h3>
+
+                                                        <address>
+                                                        <strong class='badge-info'>{{company.companyCode}}</strong>
+                                                        <br><br>
+                                                       {{company.description}}<br>
+                                                                                    <abbr title="Phone">Tel:</abbr> {{company.phone}}
+                                                   </address>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                           </div>
+                                        </div>
     </div>
 </div>
 <div class="widget style1 navy-bg" style="width: 210px;margin: 0 auto;cursor:pointer" id="add_company">
@@ -44,40 +69,27 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">公司名称：</label>
                 <div class="col-sm-8">
-                    <input id="companyName" name="companyName" minlength="2" type="text" class="form-control"
+                    <input id="companyName" v-model="entity.companyName" minlength="2" type="text" class="form-control"
                            required="" aria-required="true"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">所在城市：</label>
-                <div class="col-sm-8">
-                    <input id="city" name="city" minlength="2" type="text" class="form-control" required=""
-                           aria-required="true"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">HR码：</label>
                 <div class="col-sm-8">
-                    <input id="companyCode" type="text" class="form-control" name="hrcode" required=""
+                    <input v-model="entity.companyCode" type="text" class="form-control"  required=""
                            aria-required="true"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">简介：</label>
                 <div class="col-sm-8">
-                    <textarea style="resize:none" id="description" name="description" class="form-control" required=""
+                    <textarea style="resize:none" v-model="entity.description"  class="form-control" required=""
                               aria-required="true"></textarea>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">联系方式：</label>
-                <div class="col-sm-8">
-                    <input id="phone" name="phone" type="tel" class="form-control" required="" aria-required="true"/>
                 </div>
             </div>
             <div class="form-group" style="text-align: center">
                 <div class="col-sm-6 col-sm-offset-3">
-                    <button class="btn btn-primary" type="submit">提交</button>
+                    <button class="btn btn-primary" type="submit" @click="save">提交</button>
                 </div>
             </div>
         </form>
@@ -85,16 +97,17 @@
 </div>
 <br>
 <br>
-
+</div>
 <!-- 全局js -->
-<script src="/js/jquery.min.js?v=2.1.4"></script>
-<script src="/js/bootstrap.min.js?v=3.3.6"></script>
-<script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
-
+<script src="/recruit-online/js/jquery.min.js?v=2.1.4"></script>
+<script src="/recruit-online/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="/recruit-online/js/plugins/sweetalert/sweetalert.min.js"></script>
+ <script src="/recruit-online/js/commom.js"></script>
+ <script src="/recruit-online/js/admin/contacts.js"></script>
 <script>
     $(document).ready(function () {
         $.ajax({
-            url: "getcompany",
+            url: "/recruit-online/company",
             type: 'get',
             contentType: 'application/json',
             data: "",
@@ -106,26 +119,7 @@
                     var array = jQuery.parseJSON(data);
                     console.log(array);
                     $(array).each(function () {
-                        $("#company").append("<div class=\"col-sm-4 animated fadeInRight\">\n" +
-                            "                <div class=\"contact-box\">\n" +
-                            "                        <div class=\"col-sm-4\">\n" +
-                            "                            <div class=\"text-center\">\n" +
-                            "                                <img alt=\"image\" class=\"img-circle m-t-xs img-responsive\" src=\"/img/img" + this.companyLogo + ".jpg\">\n" +
-                            "                                <div class=\"m-t-xs font-bold\">CTO</div>\n" +
-                            "                            </div>\n" +
-                            "                        </div>\n" +
-                            "                        <div class=\"col-sm-8\">\n" +
-                            "                            <h3><strong>" + this.companyName + "</strong></h3>\n" +
-
-                            "                            <address>\n" +
-                            "                            <strong class='badge-info'>" + this.companyCode + "</strong><br><br>\n" +
-                            "                            " + this.description + "<br>\n" +
-                            //                            "                            <abbr title=\"Phone\">Tel:</abbr> "+this.phone+"\n" +
-                            "                        </address>\n" +
-                            "                        </div>\n" +
-                            "                        <div class=\"clearfix\"></div>\n" +
-                            "                </div>\n" +
-                            "            </div>")
+                        $("#company").append("");
                     })
                     $('.contact-box').each(function () {
                         animationHover(this, 'pulse');
@@ -178,7 +172,7 @@
 
 
 <!-- 自定义js -->
-<script src="/js/content.js?v=1.0.0"></script>
+<script src="/recruit-online/js/content.js?v=1.0.0"></script>
 
 </body>
 

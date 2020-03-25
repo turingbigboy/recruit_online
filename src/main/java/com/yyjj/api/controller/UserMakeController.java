@@ -2,6 +2,9 @@ package com.yyjj.api.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -18,6 +21,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yyjj.api.vo.PositionVO;
 import com.yyjj.api.vo.UserMakeVO;
 import com.yyjj.api.vo.UserVO;
+import com.yyjj.db.model.User;
 import com.yyjj.db.model.UserMake;
 import com.yyjj.domain.context.AjaxResult;
 import com.yyjj.domain.service.BasePage;
@@ -54,14 +58,24 @@ public class UserMakeController {
 	}
 	
 	/**
-	 * 收藏职位详情
-	 * @param id UserMakeid
+	 * 用户是否收藏简历
+	 * @param id Userid
 	 * @return
 	 */
 	
-	@GetMapping("/{id:\\d+}")
-	public AjaxResult<UserMakeVO> Detail(@PathVariable Integer id) {	
-		return AjaxResult.success("",convert(usermakeService.getById(id)));
+	@GetMapping("/is_mark/{positionId:\\d+}")
+	public AjaxResult<UserMakeVO> Detail(@PathVariable Integer positionId,HttpServletRequest request) {
+		User user = (User) request.getSession().getAttribute("user");
+		if(Objects.isNull(user)) {
+			return AjaxResult.success("",false);
+		}
+		UserMake one = usermakeService.lambdaQuery().eq(UserMake::getPositionId, positionId)
+			.eq(UserMake::getUserId, user.getUserId()).one();
+		if(Objects.nonNull(one)) {
+			return AjaxResult.success("",true);
+		}else {
+			return AjaxResult.success("",false);
+		}
 	}
 	
 	
@@ -75,10 +89,10 @@ public class UserMakeController {
 	public AjaxResult<UserMakeVO> add(@RequestBody @Validated UserMakeVO vo) {
 		boolean result = usermakeService.save(vo.convert());
 		if(result) {
-			return AjaxResult.success("新增成功");
+			return AjaxResult.success("收藏成功");
 		}
 		
-		return AjaxResult.failed("新增失败");	
+		return AjaxResult.failed("收藏失败");	
 	}
 	
 	/**
@@ -101,9 +115,12 @@ public class UserMakeController {
 	 * 移除收藏
 	 * @param id
 	 */
-	@DeleteMapping("/{id:\\d+}")
-	public AjaxResult<Boolean> remove(@PathVariable Integer id) {
-		boolean result = usermakeService.removeById(id);
+	@DeleteMapping("/unmake")
+	public AjaxResult<Boolean> remove(UserMakeVO vo) {
+		boolean result = usermakeService.remove(
+				new QueryWrapper<UserMake>().lambda()
+				.eq(UserMake::getPositionId, vo.getPositionId())
+				.eq(UserMake::getUserId, vo.getUserId()));
 		if(result) {
 			return AjaxResult.success("删除成功");
 		}

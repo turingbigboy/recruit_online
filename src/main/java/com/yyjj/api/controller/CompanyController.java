@@ -1,18 +1,8 @@
 package com.yyjj.api.controller;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
-import com.yyjj.db.model.Company;
-import com.yyjj.api.vo.CompanyVO;
-import com.yyjj.service.service.CompanyService;
-import com.yyjj.domain.context.AjaxResult;
-import com.yyjj.domain.service.BasePage;
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +12,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.yyjj.api.vo.CompanyVO;
+import com.yyjj.db.model.Company;
+import com.yyjj.domain.context.AjaxResult;
+import com.yyjj.domain.service.BasePage;
+import com.yyjj.service.service.CompanyService;
 
 
 /**
@@ -38,7 +35,7 @@ public class CompanyController {
 	CompanyService companyService;
 	
 	/**
-	 * ${controllerName}
+	 * 公司列表
 	 * @param vo
 	 * @return
 	 */
@@ -46,6 +43,7 @@ public class CompanyController {
 	public AjaxResult<CompanyVO> listBasePage(CompanyVO vo){
 		return AjaxResult.success("",companyService.listPage(new QueryWrapper<Company>(vo.convert())).converterAll(this::convert));
 	}
+	
 	
 	/**
 	 *${controllerName}

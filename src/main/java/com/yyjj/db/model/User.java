@@ -1,6 +1,7 @@
 package com.yyjj.db.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -21,7 +22,7 @@ public class User implements Serializable {
     private Integer userId;
 
     private String account;
-
+    private LocalDateTime createTime;
     private String password;
 
     private String name;
@@ -164,6 +165,14 @@ public class User implements Serializable {
     public void setDirDesire(Integer dirDesire) {
         this.dirDesire = dirDesire;
     }
+
+	public LocalDateTime getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(LocalDateTime createTime) {
+		this.createTime = createTime;
+	}
 
 	@Override
 	public String toString() {

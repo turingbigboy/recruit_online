@@ -1,7 +1,9 @@
 package com.yyjj.db.model;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
+import com.baomidou.mybatisplus.annotation.TableName;
 
 /**
  * <p>
@@ -35,7 +37,7 @@ public class DropBox implements Serializable {
      * 投递状态 0:未审阅 1：已阅读 
      */
     private Integer state;
-
+    private LocalDateTime createTime;
     public Integer getId() {
         return id;
     }
@@ -47,7 +49,17 @@ public class DropBox implements Serializable {
         return positionId;
     }
 
-    public void setPositionId(Integer positionId) {
+  
+
+	public LocalDateTime getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(LocalDateTime createTime) {
+		this.createTime = createTime;
+	}
+
+	public void setPositionId(Integer positionId) {
         this.positionId = positionId;
     }
     public Integer getResumeId() {

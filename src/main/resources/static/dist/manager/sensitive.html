@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+<!-- 页面meta -->
+    <meta charset="utf-8">
+    <meta sensitive="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title></title>
+    <meta sensitive="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta sensitive="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link rel="shortcut icon" href="favicon.ico"> <link href="/recruit-online/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/recruit-online/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+<link rel="stylesheet" href="/recruit-online/vue/plugins/bootstrap/css/bootstrap-datetimepicker.css">
+    <link rel="stylesheet" href="/recruit-online/vue/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/recruit-online/vue/plugins/adminLTE/css/AdminLTE.css">
+    <link rel="stylesheet" href="/recruit-online/vue/plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="/recruit-online/vue/css/style.css">
+    
+    <meta sensitive="viewport" content="width=device-width, initial-scale=1.0">
+    <meta sensitive="renderer" content="webkit">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/recruit-online/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/recruit-online/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/recruit-online/css/animate.css" rel="stylesheet">
+    <link href="/recruit-online/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="/recruit-online/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+     
+    <link rel="stylesheet" type="text/css" href="/recruit-online/css/webbase.css" />
+   
+    <script src="/recruit-online/vue/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="/recruit-online/vue/plugins/bootstrap/js/bootstrap.min.js"></script>  
+    <script src="/recruit-online/vue/plugins/adminLTE/js/app.min.js"></script>
+    <script src="/recruit-online/vue/plugins/vue/vue.js"></script>
+    <script src="/recruit-online/vue/plugins/vue/vuejs-paginate.js"></script>
+    <script src="/recruit-online/vue/plugins/axios/axios.js"></script>
+    <script src="/recruit-online/vue/plugins/vue/vue-select.js"></script>
+    <script src="/recruit-online/vue/plugins/bootstrap/js/moment-with-locales.min.js"></script> 
+    <script src="/recruit-online/vue/plugins/bootstrap/js/bootstrap-datetimepicker.js"></script>
+   
+    <!-- Data Tables -->
+    <link href="/recruit-online/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/recruit-online/css/animate.css" rel="stylesheet">
+    <link href="/recruit-online/css/style.css?v=4.1.0" rel="stylesheet">
+   <script src="/recruit-online/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/recruit-online/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="/recruit-online/js/plugins/jeditable/jquery.jeditable.js"></script>
+    <!-- Data Tables -->
+    <script src="/recruit-online/js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="/recruit-online/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+    <!-- 自定义js -->
+    <script src="/recruit-online/js/content.js?v=1.0.0"></script>
+
+	 <script src="/recruit-online/js/content.js?v=1.0.0"></script>
+
+</head>
+
+<body class="gray-bg">
+<div id = "Box">
+<button type="button" class="btn btn-primary" @click="initAdd" data-toggle="modal" data-target="#myModal6">新增</button>                     
+       
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    
+                    <div class="ibox-content">
+						<!-- 表格 -->
+                        <table class="table table-striped table-bordered table-hover dataTables-example">
+                            <thead>
+                                <tr>
+                                    <th>敏感词id</th>
+                                    <th>敏感词名称</th>                           
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="gradeX" v-for="sensitive in SearchResult.rows.records">
+                                    <td>{{sensitive.id}}</td>
+                                    <td>{{sensitive.name}}</td>                                                                                                           
+                                    <td class="center">
+                                    <button type="button" class="btn btn-outline btn-primary" @click="remove(sensitive.id)" >删除</button>
+ 									<button type="button" class="btn btn-primary" @click="findById(sensitive.id)" data-toggle="modal" data-target="#myModal6">编辑</button>                               
+                                </tr>                                                               
+                            </tbody>
+                           
+                        </table>
+					<!-- 表格结束 -->
+					
+					 <paginate 
+							  	:container-class="'pagination'" :page-count="pageCount" 
+							  	:click-handler="query" :prev-text="'上一页'" :next-text="'下一页'"
+							  	:first-last-button="true" v-model="SearchParam.page"
+							  ></paginate>
+                    </div>
+                </div>
+            </div>
+   		   <div class="modal fade" id="myModal6" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+								  <div class="modal-dialog" >
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" @click="clear" data-dismiss="modal" aria-hidden="true">×</button>
+											<h3 id="myModalLabel">敏感词</h3>
+										</div>
+										<div class="modal-body">
+								               <input type="hidden" v-model="entity.id">
+											   <label >敏感词：</label>													      
+											   <input type="text" v-model="entity.name" class="form-control" placeholder="请输入分类名称"> <span class="help-block m-b-none">请输入分类名称</span>																				
+										</div>
+										<div class="modal-footer">						
+											<button class="btn btn-success" @click="add" data-dismiss="modal" aria-hidden="true">保存</button>
+											<button class="btn btn-default" @click="clear" data-dismiss="modal" aria-hidden="true">关闭</button>
+										</div>
+									  </div>
+									</div>
+								</div>        
+            
+            <!-- 弹窗 -->
+           <div class="col-sm-4">
+                <div class="ibox ">                   
+                    	
+                        
+                        <!-- 新增或编辑一级类型 -->
+                       <!-- 新增窗口 -->
+								
+								                        
+                       <!-- 新增或编辑一级类型 --> 
+                            
+                            
+                            <!-- 新增或编辑二级类型 -->
+                        
+                       <!-- 新增或编辑二级类型 -->
+                    </div>
+                    
+                </div>
+            <!-- 弹窗结束 -->
+        
+ 
+	</div>
+    <!-- 全局js -->
+ 
+    <script src="/recruit-online/js/commom.js"></script>
+ <script src="/recruit-online/js/admin/sensitive.js"></script>  
+</body>
+
+</html>

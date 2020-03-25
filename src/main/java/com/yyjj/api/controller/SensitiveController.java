@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yyjj.api.vo.SensitiveVO;
-import com.yyjj.db.model.Sensitive;
+import com.yyjj.db.model.Sensitives;
 import com.yyjj.domain.context.AjaxResult;
 import com.yyjj.domain.service.BasePage;
 import com.yyjj.service.service.SensitiveService;
@@ -42,7 +42,7 @@ public class SensitiveController {
 	 */
 	@GetMapping
 	public AjaxResult<SensitiveVO> listBasePage(SensitiveVO vo){
-		return AjaxResult.success("",sensitiveService.listPage(new QueryWrapper<Sensitive>(vo.convert())).converterAll(this::convert));
+		return AjaxResult.success("",sensitiveService.listPage(new QueryWrapper<Sensitives>(vo.convert())).converterAll(this::convert));
 	}
 	
 	/**
@@ -101,17 +101,17 @@ public class SensitiveController {
 		return AjaxResult.failed("删除失败");
 	}
 	
-	private BasePage<SensitiveVO> convert(BasePage<Sensitive> basePage) {
+	private BasePage<SensitiveVO> convert(BasePage<Sensitives> basePage) {
 		List<SensitiveVO> resultList = new ArrayList<SensitiveVO>();
 					
-		for (Sensitive sensitive : basePage.getRecords()) {
+		for (Sensitives sensitive : basePage.getRecords()) {
 			resultList.add(convert(sensitive));
 		}
 		BasePage<SensitiveVO> result = new BasePage<SensitiveVO>(basePage.getPage(),
 				basePage.getPageSize(), basePage.getCurrent(), basePage.getTotal(), resultList);
 		return result;
 	}
-	private SensitiveVO convert(Sensitive sensitive){
+	private SensitiveVO convert(Sensitives sensitive){
 			SensitiveVO vo = SensitiveVO.newInstance(sensitive);
 			//TODO
 			return vo;

@@ -1,12 +1,15 @@
 package com.yyjj.api.vo;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.BeanUtils;
 
+import com.yyjj.db.model.Position;
 import com.yyjj.db.model.User;
 import com.yyjj.service.bo.UserBO;
 
@@ -58,7 +61,14 @@ public class UserVO implements Serializable {
     private Integer dirDesire;
     
     private Integer state;
-     
+    
+    private List<Position> markPositions;
+    
+    private List<DropBoxVO> dropBoxs;
+    
+    private ResumeVO resume;
+    
+    private LocalDateTime createTime;
     public static  UserVO newInstance( User  user) {
         if(Objects.isNull( user)) {
   	    return null;

@@ -5,7 +5,7 @@ import java.util.Objects;
 
 import org.springframework.beans.BeanUtils;
 
-import com.yyjj.db.model.Sensitive;
+import com.yyjj.db.model.Sensitives;
 import com.yyjj.service.bo.SensitiveBO;
 
 import lombok.Getter;
@@ -34,8 +34,8 @@ public class SensitiveVO implements Serializable {
     /**
      * 敏感词
      */
-    private String sensitive;
-    public static  SensitiveVO newInstance( Sensitive  sensitive) {
+    private String name;
+    public static  SensitiveVO newInstance( Sensitives  sensitive) {
         if(Objects.isNull( sensitive)) {
   	    return null;
   	  }        
@@ -53,8 +53,8 @@ public class SensitiveVO implements Serializable {
         return  sensitiveVO;
   	}
   	    
-  	public  Sensitive convert() {
-  		 Sensitive  sensitive = new  Sensitive();
+  	public  Sensitives convert() {
+  		 Sensitives  sensitive = new  Sensitives();
   	  BeanUtils.copyProperties(this,  sensitive);
   	  return  sensitive;
   	}

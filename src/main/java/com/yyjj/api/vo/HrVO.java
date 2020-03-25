@@ -1,6 +1,7 @@
 package com.yyjj.api.vo;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import org.springframework.beans.BeanUtils;
@@ -30,7 +31,7 @@ public class HrVO implements Serializable {
      * hr账号
      */
     private String account;
-
+    private LocalDateTime createTime;
     /**
      * 密码
      */

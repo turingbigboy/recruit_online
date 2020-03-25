@@ -95,7 +95,16 @@ public class HrController {
 		return AjaxResult.success("",convert(hrService.getById(id)));
 	}
 	
-	
+	/**
+	 *当前用户
+	 * @param id Userid
+	 * @return
+	 */
+	@GetMapping("/present")
+	public AjaxResult<HrVO> Detail(HttpServletRequest request) {	
+		Hr attribute = (Hr) request.getSession().getAttribute("hr");
+		return AjaxResult.success("",HrVO.newInstance(attribute));
+	}
 	/**
 	 * 新增hr
 	 * @param vo

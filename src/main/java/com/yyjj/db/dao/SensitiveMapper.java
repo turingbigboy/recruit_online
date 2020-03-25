@@ -1,7 +1,7 @@
 package com.yyjj.db.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.yyjj.db.model.Sensitive;
+import com.yyjj.db.model.Sensitives;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.yyjj.db.model.Sensitive;
  * @author yml
  * @since 2020-03-18
  */
-public interface SensitiveMapper extends BaseMapper<Sensitive> {
+public interface SensitiveMapper extends BaseMapper<Sensitives> {
 
 }
