@@ -2,6 +2,7 @@ package com.yyjj.api.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -20,6 +21,7 @@ import com.yyjj.api.vo.UserVO;
 import com.yyjj.db.model.Resume;
 import com.yyjj.domain.context.AjaxResult;
 import com.yyjj.domain.service.BasePage;
+import com.yyjj.service.service.ResumeLableService;
 import com.yyjj.service.service.ResumeService;
 import com.yyjj.service.service.UserService;
 
@@ -40,6 +42,8 @@ public class ResumeController {
 	@Autowired
 	UserService userService;
 	
+	@Autowired
+	ResumeLableService resumeLableService;
 	/**
 	 *分页查询简历
 	 * @param vo
@@ -48,6 +52,38 @@ public class ResumeController {
 	@GetMapping
 	public AjaxResult<ResumeVO> listBasePage(ResumeVO vo){
 		return AjaxResult.success("",resumeService.listPage(new QueryWrapper<Resume>(vo.convert())).converterAll(this::convert));
+	}
+	
+	/**
+	 * 根据类型查询简历
+	 * @param sortId
+	 * @param vo
+	 * @return
+	 */
+	@GetMapping("/sort/{sortId:\\d+}")
+	public AjaxResult<ResumeVO> listBasePageBySort(@PathVariable Integer sortId,ResumeVO vo){
+		return AjaxResult.success("",
+				resumeService.listPage(new QueryWrapper<Resume>(vo.convert()).lambda().inSql(Resume::getId
+						, "select resume_id from resume_lable where sort_id ="+sortId))
+				.converterAll(this::convert));
+	}
+	
+	/**
+	 * 根据标题查询简历
+	 * 
+	 * @param vo
+	 * @return
+	 */
+	@GetMapping("/title")
+	public AjaxResult<ResumeVO> listBasePageBySort(ResumeVO vo) {
+		
+		if(Objects.isNull(vo)||Objects.isNull(vo.getTitle())) {
+			vo = new ResumeVO();
+			vo.setTitle("");
+		}
+		return AjaxResult.success("",
+				resumeService.listPage(new QueryWrapper<Resume>().lambda().like(Resume::getTitle, vo.getTitle()))
+				.converterAll(this::convert));
 	}
 	
 	/**

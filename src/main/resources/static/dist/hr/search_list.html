@@ -19,40 +19,22 @@
  <div id="Box">
 <div class="wrap">
     <div class="header">
-        <div class="container row" id="header-vue-bind-div">
+         <div class="container row" id="header-vue-bind-div">
             <a class="logo"></a>
-            <ul class="nav col-lg-8">
+             <ul class="nav col-lg-8">
                 <!--<li class="address">全国</li>-->
-                <li class="nav_li"><a class="nav_item" href="index.html">首页</a></li>
-                <li class="nav_li current"><a class="nav_item" href="/recruit-online/dist/user/search_list.html">职位搜索</a></li>
-           
-                <li class="nav_li"><a class="nav_item" href="/recruit-online/dist/user/user_info.html">我的简历</a></li>
+                <li class="nav_li "><a class="nav_item" href="index.html">首页</a></li>
+                <li class="nav_li current"><a class="nav_item" href="/recruit-online/dist/hr/search_list.html">简历搜索</a></li>
+               
+                <li class="nav_li"><a class="nav_item" href="/recruit-online/dist/hr/hr_info.html">我发布的职位</a></li>
             </ul>
 
             <ul class="clear_fix col-lg-2  " v-if="type===null">
-                <li><a class="clear_fix_item login" href="/recruit-online/dist/user/user_login.html">登录</a></li>
+                <li><a class="clear_fix_item login" href="/recruit-online/dist/hr/hr_login.html">登录</a></li>
                 <li><a class="clear_fix_item register" href="/recruit-online/dist/general/register.html">注册</a></li>
             </ul>
 
-            <ul class="clear_fix col-lg-2 " v-if="type==='user'">
-                <li><img src="https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3803332007,2672307128&fm=58" alt=""
-                         class="img-circle" style="width: 48px;height: 48px"></li>
-                <li>
-
-                    <div class="dropdown">
-                        <a id="dLabel" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <h6>{{user.nickname}}</h6>
-                            <span class="caret"></span>
-                        </a>
-                       <ul class="dropdown-menu" aria-labelledby="dLabel">
-                            <li><a href="user_info.html">个人中心</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a @click="logout">注销</a></li>
-                        </ul>
-                    </div>
-
-                </li>
-            </ul>
+            
             <ul class="clear_fix col-lg-2 " v-if="type==='hr'">
                 <li><img src="https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3803332007,2672307128&fm=58" alt=""
                          class="img-circle" style="width: 48px;height: 48px"></li>
@@ -60,20 +42,19 @@
 
                     <div class="dropdown">
                         <a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <h6>{{person.hr.hrName}}</h6>
+                            <h6>{{hr.name}}</h6>
                             <span class="caret"></span>
                         </a>
+
                         <ul class="dropdown-menu" aria-labelledby="dLabel">
-                            <li><a href="user/usercenter">个人中心</a></li>
-                            <li><a href="user/usercenter">管理中心</a></li>
+                            <li><a href="hr/hrcenter">个人中心</a></li>
+                            <li><a href="hr/hrcenter">管理中心</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="user/logout">注销</a></li>
+                            <li><a href="hr/logout">注销</a></li>
                         </ul>
                     </div>
-
                 </li>
             </ul>
-
         </div>
     </div>
    
@@ -85,7 +66,7 @@
          <form class="text-center row" name="search_form" action="/searchlist" method="get">  
                 <input class="search-input col-md-7 col-md-offset-1" v-model="title" type="text"
                        placeholder="搜索职位关键字">
-                <input  class="col-md-2" @click="getPositionByTitle" id="search-button" value="搜索"/>
+                <input  class="col-md-2" @click="getResumeByTitle" id="search-button" value="搜索"/>
 		</form>
         </div>
      <div class="hot-search ">
@@ -108,45 +89,43 @@
         <div class="jot-tab-content row">
             <div class="line">
                 <ul class="col-md-4 no-margin-bottom">
-                    <li class="nav_item col-md-4"><a @click="getPostionBySalary" >最具价值</a></li>
-                    <li class="nav_item col-md-4"><a @click="getPostionByCreateTime">最新发布</a></li>
-                    <li class="nav_item col-md-4"><a @click="getPostionByHits">最具人气</a></li>
+                    <li class="nav_item col-md-4"><a @click="getResumeBySalary" >最具价值</a></li>
+                    <li class="nav_item col-md-4"><a @click="getResumeByCreateTime">最新发布</a></li>
+                    <li class="nav_item col-md-4"><a @click="getResumeByHits">最具人气</a></li>
                 </ul>
             </div>
         </div>
         <div class="job-summary-container container" id="posItem">
             <div class="content " class="job-content" v-if="orderBy==='salaryUp'">
 
-                <div class="col-lg-4 summary-border" class="job-box" v-for="job in positions.records">
+                <div class="col-lg-4 summary-border" class="job-box" v-for="job in resumes.records">
                     <div class="job-summary">
                         <div class="line-1 row">
-                            <div class="job-name col-md-9"><a @click="getPositionById(job.id)">{{job.title}}</a><span class="create-item"><!--{{job.releaseDate.}}--><span
+                            <div class="job-name col-md-9"><a @click="getResumeById(job.id)">{{job.user.name}}-{{job.title}}</a><span class="create-item"><!--{{job.releaseDate.}}--><span
                                     class="lianxi iconfont icon-lianxi"></span> </span></div>
-                            <div class="job-salary col-md-3  text-right">
-                                {{Math.floor(job.salaryDown/1000)}}K-{{Math.floor(job.salaryUp/1000)}}K
+                            <div class="job-salary col-md-6  text-right">
+                              	  期望薪资： {{Math.floor(job.salaryDown/1000)}}K-{{Math.floor(job.salaryUp/1000)}}K
                             </div>
                         </div>
 
                         <div class="line-3 job-tag-content row" style="margin-left: -58px">
                             <ul>
-                                <li class="job-tag" style="width:120px">工作城市：{{job.workCity}}</li>
-                                <li class="job-tag" style="width:120px">招聘人数：{{job.quantity}}</li>
+                                <li class="job-tag" style="width:120px">{{job.user.graduation}}</li>
+                                <li class="job-tag" style="width:60px">{{job.user.eduDegree}}</li>
                                 <li class="job-tag" style="width:100px">浏览量：{{job.hits}}</li>
                             </ul>
                         </div>
 
-                        <div class="line-2 job-require">工作要求：{{job.requirement}}</div>
+                        <div class="line-2 job-require">{{job.user.major}}</div>
 
                         <div class="company">
-                            <img style="width: 40px;height: 40px" class="img-rounded"
-                                :src="'/recruit-online/img/img'+job.companyId+'.jpg'"/>
+                           
                             <div class="company-right">
                                 <div class="row company-name">
-                                    <a href="">{{job.companyName}}</a>
+                                  
+                                    <a href="">就职期望：{{job.jobDesire}}</a>
                                 </div>
-                                <div class="row company-description">
-                                    {{job.description}}
-                                </div>
+                               
                             </div>
                         </div>
                     </div>
@@ -155,36 +134,34 @@
             </div>
             <div class="content " class="job-content" v-if="orderBy==='releaseDate'">
 
-                <div class="col-lg-4 summary-border" class="job-box" v-for="job in positions.records">
-                    <div class="job-summary">
+                <div class="col-lg-4 summary-border" class="job-box" v-for="job in resumes.records">
+                     <div class="job-summary">
                         <div class="line-1 row">
-                            <div class="job-name col-md-9"><a @click="getPositionById(job.id)">{{job.title}}</a><span class="create-item"><!--{{job.releaseDate.}}--><span
+                            <div class="job-name col-md-9"><a @click="getResumeById(job.id)">{{job.user.name}}-{{job.title}}</a><span class="create-item"><!--{{job.releaseDate.}}--><span
                                     class="lianxi iconfont icon-lianxi"></span> </span></div>
-                            <div class="job-salary col-md-3  text-right">
-                                {{Math.floor(job.salaryDown/1000)}}K-{{Math.floor(job.salaryUp/1000)}}K
+                            <div class="job-salary col-md-6  text-right">
+                              	  期望薪资： {{Math.floor(job.salaryDown/1000)}}K-{{Math.floor(job.salaryUp/1000)}}K
                             </div>
                         </div>
 
                         <div class="line-3 job-tag-content row" style="margin-left: -58px">
                             <ul>
-                                <li class="job-tag" style="width:120px">工作城市：{{job.workCity}}</li>
-                                <li class="job-tag" style="width:120px">招聘人数：{{job.quantity}}</li>
+                                <li class="job-tag" style="width:120px">{{job.user.graduation}}</li>
+                                <li class="job-tag" style="width:60px">{{job.user.eduDegree}}</li>
                                 <li class="job-tag" style="width:100px">浏览量：{{job.hits}}</li>
                             </ul>
                         </div>
 
-                        <div class="line-2 job-require">工作要求：{{job.requirement}}</div>
+                        <div class="line-2 job-require">{{job.user.major}}</div>
 
                         <div class="company">
-                            <img style="width: 40px;height: 40px" class="img-rounded"
-                                 :src="'/recruit-online/img/img'+job.companyId+'.jpg'"/>
+                           
                             <div class="company-right">
                                 <div class="row company-name">
-                                    <a href="">{{job.companyName}}</a>
+                                  
+                                    <a href="">就职期望：{{job.jobDesire}}</a>
                                 </div>
-                                <div class="row company-description">
-                                    {{job.description}}
-                                </div>
+                               
                             </div>
                         </div>
                     </div>
@@ -193,36 +170,34 @@
             </div>
             <div class="content " class="job-content" v-if="orderBy==='hits'">
 
-                <div class="col-lg-4 summary-border" class="job-box" v-for="job in positions.records">
-                    <div class="job-summary">
+                <div class="col-lg-4 summary-border" class="job-box" v-for="job in resumes.records">
+                     <div class="job-summary">
                         <div class="line-1 row">
-                            <div class="job-name col-md-9"><a @click="getPositionById(job.id)">{{job.title}}</a><span class="create-item"><!--{{job.releaseDate.}}--><span
+                            <div class="job-name col-md-9"><a @click="getResumeById(job.id)">{{job.user.name}}-{{job.title}}</a><span class="create-item"><!--{{job.releaseDate.}}--><span
                                     class="lianxi iconfont icon-lianxi"></span> </span></div>
-                            <div class="job-salary col-md-3  text-right">
-                                {{Math.floor(job.salaryDown/1000)}}K-{{Math.floor(job.salaryUp/1000)}}K
+                            <div class="job-salary col-md-6  text-right">
+                              	  期望薪资： {{Math.floor(job.salaryDown/1000)}}K-{{Math.floor(job.salaryUp/1000)}}K
                             </div>
                         </div>
 
                         <div class="line-3 job-tag-content row" style="margin-left: -58px">
                             <ul>
-                                <li class="job-tag" style="width:120px">工作城市：{{job.workCity}}</li>
-                                <li class="job-tag" style="width:120px">招聘人数：{{job.quantity}}</li>
+                                <li class="job-tag" style="width:120px">{{job.user.graduation}}</li>
+                                <li class="job-tag" style="width:60px">{{job.user.eduDegree}}</li>
                                 <li class="job-tag" style="width:100px">浏览量：{{job.hits}}</li>
                             </ul>
                         </div>
 
-                        <div class="line-2 job-require">工作要求：{{job.requirement}}</div>
+                        <div class="line-2 job-require">{{job.user.major}}</div>
 
                         <div class="company">
-                            <img style="width: 40px;height: 40px" class="img-rounded"
-                                 :src="'/recruit-online/img/img'+job.companyId+'.jpg'"/>
+                           
                             <div class="company-right">
                                 <div class="row company-name">
-                                    <a href="">{{job.companyName}}</a>
+                                  
+                                    <a href="">就职期望：{{job.jobDesire}}</a>
                                 </div>
-                                <div class="row company-description">
-                                    {{job.description}}
-                                </div>
+                               
                             </div>
                         </div>
                     </div>
@@ -267,6 +242,6 @@
     })
 </script>
 <script src="/recruit-online/js/commom.js"></script>
-<script src="/recruit-online/js/search_list.js"></script>
+<script src="/recruit-online/js/hr/search_list.js"></script>
 </body>
 </html>

@@ -12,8 +12,9 @@ var vue=new Vue({
 		company:{},
 		department:{},
 		reviews:[],     
-        hr: {},
-        type:"hr",
+        hr: {
+        },
+        type:null,
         addComment:{
         	content:"",
         	type:""
@@ -28,11 +29,15 @@ var vue=new Vue({
 				alert("请前往登录")
 				location.href="/recruit-online/dist/hr/hr_login.html";
 			}
-			this.mark.id=this.hr.id;
+			this.mark.hrId=this.hr.id;
 			this.mark.resumeId = this.resume.id;
+			var self =this;
 			axios.post("/recruit-online/hrmake",
 					this.mark).then(function(res){					
 				alert(res.data.msg);
+				if(res.data.code ==0 ){
+					self.isMark=1;
+				}
 				console.log(res);
 			}).catch(function(err){
 				alert(err);
@@ -46,21 +51,14 @@ var vue=new Vue({
 			var self = this;
 			this.mark.id=this.hr.id;
 			this.mark.resumeId = this.resume.id;
-			axios.delete("/recruit-online/hrmake/unmake?id="+this.hr.id
+			axios.delete("/recruit-online/hrmake/unmake?hrId="+this.hr.id
 					+"&resumeId="+this.resume.id
 					).then(function(res){						
-						axios.get("/recruit-online/resume/"+self.resume.id
-						).then(function(res){
-							console.log(res);
-							self.resume = res.data.data;
-							self.category =  res.data.data.sorts;
-							self.company = res.data.data.company;
-							self.department = res.data.data.hr;										
-							self.reviews = res.data.data.reviews;
-							self.seartchMarks();
-						}).catch(function(err){
-							alert(err);
-					});
+						alert(res.data.msg);
+						if(res.data.code ==0 ){
+							self.isMark=0;
+						}
+						console.log(res);
 			}).catch(function(err){
 				alert(err);
 			})
@@ -126,6 +124,9 @@ var vue=new Vue({
 			).then(function(res){
 				console.log(res);
 				self.hr = res.data.data;
+				if(self.hr!=null){
+				self.type = "hr";
+				}
 			}).catch(function(err){
 				alert(err);
 		}) 

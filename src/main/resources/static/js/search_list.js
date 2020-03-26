@@ -2,7 +2,7 @@
 var box = new Vue({
     data: {
       positions:[],
-      type:"user",
+      type:null,
       user:{},
       orderBy:"salaryUp",
       title:""
@@ -108,11 +108,25 @@ var box = new Vue({
 			}).catch(function(err){
 				alert(err);
 			})
+		},
+		present:function(){
+			var self=this;
+			axios.get("/recruit-online/user/present"
+			).then(function(res){
+				console.log(res);
+				self.user = res.data.data;
+				if(self.user!=null){
+				self.type = "user";
+				}
+			}).catch(function(err){
+				alert(err);
+		}) 
 		}
     },
 	mixins:[entityMixin]
     ,
     created:function(){	
+    	this.present();
 		this.queryCheck();		
 	}	
 });

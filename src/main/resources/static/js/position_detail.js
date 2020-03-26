@@ -13,7 +13,7 @@ var vue=new Vue({
 		department:{},
 		reviews:[],     
         user: {},
-        type:"user",
+        type:null,
         addComment:{
         	content:"",
         	type:""
@@ -30,9 +30,13 @@ var vue=new Vue({
 			}
 			this.mark.userId=this.user.userId;
 			this.mark.positionId = this.position.id;
+			var self = this;
 			axios.post("/recruit-online/usermake",
 					this.mark).then(function(res){					
 				alert(res.data.msg);
+				if(res.data.code ==0 ){
+					self.isMark=1;
+				}
 				console.log(res);
 			}).catch(function(err){
 				alert(err);
@@ -126,6 +130,9 @@ var vue=new Vue({
 			).then(function(res){
 				console.log(res);
 				self.user = res.data.data;
+				if(self.user!=null){
+				self.type = "user";
+				}
 			}).catch(function(err){
 				alert(err);
 		}) 

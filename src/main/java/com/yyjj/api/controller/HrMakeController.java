@@ -89,10 +89,10 @@ public class HrMakeController {
 	public AjaxResult<HrMakeVO> add(@RequestBody @Validated HrMakeVO vo) {
 		boolean result = hrmakeService.save(vo.convert());
 		if(result) {
-			return AjaxResult.success("新增成功");
+			return AjaxResult.success("收藏成功");
 		}
 		
-		return AjaxResult.failed("新增失败");	
+		return AjaxResult.failed("收藏失败");	
 	}
 	
 	/**
@@ -115,13 +115,16 @@ public class HrMakeController {
 	 * 删除hr收藏
 	 * @param id
 	 */
-	@DeleteMapping("/{id:\\d+}")
-	public AjaxResult<Boolean> remove(@PathVariable Integer id) {
-		boolean result = hrmakeService.removeById(id);
+	@DeleteMapping("unmake")
+	public AjaxResult<Boolean> remove(HrMakeVO vo) {
+		boolean result = hrmakeService.remove(
+				new QueryWrapper<HrMake>().lambda()
+				.eq(HrMake::getResumeId, vo.getResumeId())
+				.eq(HrMake::getHrId, vo.getHrId()));
 		if(result) {
-			return AjaxResult.success("删除成功");
+			return AjaxResult.success("取消成功");
 		}
-		return AjaxResult.failed("删除失败");
+		return AjaxResult.failed("取消失败");
 	}
 	
 	private BasePage<HrMakeVO> convert(BasePage<HrMake> basePage) {

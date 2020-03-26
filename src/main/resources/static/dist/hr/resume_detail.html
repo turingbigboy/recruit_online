@@ -69,7 +69,7 @@
 
 
     <hr class="no-bottom"/>
-    <div id="resume_content">
+    <div id="position_content">
         <div class="details_content">
             <div class="job-header-content ">
                 <div class="job-header">
@@ -91,22 +91,19 @@
                         </ul>
                        
                     </div>
-                    <div class="resume-content-r" style="max-width: 430px;">
-                        <div class="resume-deal">
-                            <div class="collection">
-                            		
+                    <div class="position-content-r" style="max-width: 430px;">
+                        <div class="position-deal">
+                            <div class="collection">                           		
                            					 <div v-if="isMark > 0">
-										    	 <a id="favor_tag" @click="unmarks" >取消收藏</a>
+										    	 <a id="favor_tag" @click="unmarks" >移出人才库</a>
 										    </div>
 										    <div v-else>
-										      <a id="favor_tag" @click="marks" >收藏</a>
+										      <a id="favor_tag" @click="marks" >加入人才库</a>
 										    </div>
 				                              <!-- 	<span v-if="!isMark"><a id="favor_tag" @click="marks" >收藏</a></span> 
                                 	<span v-if="isMark"> </span> -->                              
                             </div>
-                            <div class="deliver">
-                                <a  @click="dropBox" id="apply_tag">加入人才库</a>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -153,10 +150,10 @@
                 </div>
 
                 <div class="interview_experience " id="resume_comment">
-                    <div class="review_anchor">职位评价</div>
+                    <div class="review_anchor"></div>
                     <div class="review-area">
                         <div class="list-empty" v-if="!reviews">
-                            <i></i> 该职位尚未收到面试评价
+                            <i></i> 
                         </div>
                         <div class="list-notempty container" v-if="reviews">
                             <div class="row review">
@@ -164,9 +161,9 @@
                                     <li class="layui-timeline-item" v-for="review in reviews">
                                         <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                                         <div class="layui-timeline-content layui-text">
-                                            <h3 class="layui-timeline-title">{{}}</h3>
+                                            <h3 class="layui-timeline-title"></h3>
                                             <p>
-                                                {{}}
+                                                
                                             </p>
                                         </div>
                                     </li>
@@ -176,18 +173,18 @@
                             </div>
                         </div>
                         
-                            <input id="comment_star"  type="number" class="rating" min=1 max=3 step=1
+                            <!-- <input id="comment_star"  type="number" class="rating" min=1 max=3 step=1
                                    data-size="xs" data-min=0 data-max=3 data-stars=3 data-step=1 required>
 
                             <textarea id="review_editor"  style="padding-top: 30px; width: 656px;"
-                                      placeholder="对这个职位吐槽点啥。。。"></textarea>
+                                      placeholder="对这个职位吐槽点啥。。。"></textarea> -->
                             <div class="button-row row" style="float:right">
-                                <div class="btn btn-default col-lg-3 col-lg-offset-2">重置</div>
+                               <!--  <div class="btn btn-default col-lg-3 col-lg-offset-2">重置</div>
                                 <div class="btn btn-default col-lg-3 col-lg-offset-2">提交</div>
                                 <button type="reset" class="btn btn-default" style="margin-right: 10px;"
                                         onclick="window.location.reload();">重置评论
                                 </button>
-                                <button  @click="addComments" class="btn btn-primary">发表评论</button>
+                                <button  @click="addComments" class="btn btn-primary">发表评论</button> -->
                             </div>
                         
                     </div>

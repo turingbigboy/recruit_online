@@ -1,12 +1,12 @@
 var vue=new Vue({
 	data:{
 		//预约接口
-		Url:"/recruit-online/user",
+		Url:"/recruit-online/hr",
 		entity:{
 			
 		},
-		user:{},
-		userDetail:{
+		hr:{},
+		hrDetail:{
 			markPositions:[],
 			dropBoxs:[]
 		},
@@ -16,21 +16,21 @@ var vue=new Vue({
 	},
 	methods:{
 		queryUser:function(){
-			this.userDetail = {};
-			this.userDetail.markPositions =[];
-			this.userDetail.dropBoxs =[];
+			this.hrDetail = {};
+			this.hrDetail.markPositions =[];
+			this.hrDetail.dropBoxs =[];
 				  var self=this;
-				axios.get("/recruit-online/user/present"
+				axios.get("/recruit-online/hr/present"
 				).then(function(res){
 					console.log(res);
-					self.user = res.data.data;
-					if(self.user!=null){
-					self.types = "user";
+					self.hr = res.data.data;
+					if(self.hr!=null){
+					self.types = "hr";
 					self.type="person";
 					}
-					if(self.user == null || self.user.userId==null){
+					if(self.hr == null || self.hr.id==null){
 						alert("请前往登录")
-						location.href="/recruit-online/dist/user/user_login.html";
+						location.href="/recruit-online/dist/hr/hr_login.html";
 					}else{
 						self.queryByUserId();
 					}
@@ -48,7 +48,7 @@ var vue=new Vue({
 		},
 		unmarks:function(positionId){
 			var self = this;
-			axios.delete("/recruit-online/usermake/unmake?userId="+this.userDetail.userId
+			axios.delete("/recruit-online/hrmake/unmake?hrId="+this.hrDetail.hrId
 					+"&positionId="+positionId
 					).then(function(res){						
 						self.queryUser();
@@ -57,25 +57,25 @@ var vue=new Vue({
 			})
 		},
 		getPositionById:function(id){
-				location.href="/recruit-online/dist/user/position_detail.html?id="+id;
+				location.href="/recruit-online/dist/hr/position_detail.html?id="+id;
 		},
 		changeType:function(typeName){
 			this.type = typeName;
 		},
 		queryByUserId:function(){
 			  var self=this;
-				axios.get("/recruit-online/user/"+self.user.userId
+				axios.get("/recruit-online/hr/"+self.hr.id
 				).then(function(res){
 					console.log(res);
 					self.navText="个人资料";
-					self.userDetail = res.data.data;					
+					self.hrDetail = res.data.data;					
 				}).catch(function(err){
 					alert(err);
 			}) 	
 		},
 		updateResume:function(){
 			axios.put("/recruit-online/resume",
-					this.userDetail.resume).then(function(res){					
+					this.hrDetail.resume).then(function(res){					
 				alert(res.data.msg);
 				console.log(res);
 			}).catch(function(err){
@@ -83,8 +83,8 @@ var vue=new Vue({
 			})
 		},
 		updateUserInfo:function(){
-			axios.put("/recruit-online/user",
-					this.userDetail).then(function(res){					
+			axios.put("/recruit-online/hr",
+					this.hrDetail).then(function(res){					
 				alert(res.data.msg);
 				console.log(res);
 			}).catch(function(err){

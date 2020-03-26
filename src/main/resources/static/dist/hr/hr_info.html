@@ -23,66 +23,43 @@
 <div id="Box">
 <div class="wrap">
    <div class="header">
-
-        <div class="container row" id="header-vue-bind-div">
+         <div class="container row" id="header-vue-bind-div">
             <a class="logo"></a>
              <ul class="nav col-lg-8">
                 <!--<li class="address">全国</li>-->
-                <li class="nav_li"><a class="nav_item" href="index.html">首页</a></li>
-                <li class="nav_li current"><a class="nav_item" href="/recruit-online/dist/user/search_list.html">职位搜索</a></li>
-           
-                <li class="nav_li"><a class="nav_item" href="/recruit-online/dist/user/user_info.html">我的简历</a></li>
+                <li class="nav_li "><a class="nav_item" href="index.html">首页</a></li>
+                <li class="nav_li current"><a class="nav_item" href="/recruit-online/dist/hr/search_list.html">简历搜索</a></li>
+               
+                <li class="nav_li"><a class="nav_item" href="/recruit-online/dist/hr/hr_info.html">我发布的职位</a></li>
             </ul>
 
-            <ul class="clear_fix col-lg-2  " v-if="types===null">
-                <li><a class="clear_fix_item login" href="/recruit-online/dist/user/user_login.html">登录</a></li>
+            <ul class="clear_fix col-lg-2  " v-if="type===null">
+                <li><a class="clear_fix_item login" href="/recruit-online/dist/hr/hr_login.html">登录</a></li>
                 <li><a class="clear_fix_item register" href="/recruit-online/dist/general/register.html">注册</a></li>
             </ul>
 
-            <ul class="clear_fix col-lg-2 " v-if="types==='user'">
-                <li><img src="https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3803332007,2672307128&fm=58" alt=""
-                         class="img-circle" style="width: 48px;height: 48px"></li>
-                <li>
-
-
-                    <div class="dropdown">
-                        <a id="dLabel" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <h6>{{user.nickname}}</h6>
-                            <span class="caret"></span>
-                        </a>
-
-
-                        <ul class="dropdown-menu" aria-labelledby="dLabel">
-                            <li><a href="user_info.html">个人中心</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a @click="logout">注销</a></li>
-                        </ul>
-                    </div>
-
-                </li>
-            </ul>
+            
             <ul class="clear_fix col-lg-2 " v-if="type==='hr'">
                 <li><img src="https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3803332007,2672307128&fm=58" alt=""
                          class="img-circle" style="width: 48px;height: 48px"></li>
                 <li>
 
-                    <!-- <div class="dropdown">
+                    <div class="dropdown">
                         <a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <h6>{{person.hr.hrName}}</h6>
+                            <h6>{{hr.name}}</h6>
                             <span class="caret"></span>
                         </a>
 
                         <ul class="dropdown-menu" aria-labelledby="dLabel">
-                            <li><a href="user/usercenter">个人中心</a></li>
-                            <li><a href="user/usercenter">管理中心</a></li>
+                            <li><a href="hr/hrcenter">个人中心</a></li>
+                            <li><a href="hr/hrcenter">管理中心</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="user/logout">注销</a></li>
+                            <li><a href="hr/logout">注销</a></li>
                         </ul>
-                    </div> -->
+                    </div>
                 </li>
             </ul>
         </div>
-        
     </div>
 
     <hr/>
@@ -96,12 +73,12 @@
         </div>
         <div class="nav-content col-lg-3">
             <div class="list-group">
-                <a class="list-group-item" @click="changeType('person')">个人资料</a>
-                <a class="list-group-item" @click="changeType('resume')">个人简历
+                <a class="list-group-item" @click="changeType('person')">个人信息</a>
+                <a class="list-group-item" @click="changeType('resume')">我发布的招聘
                     <!--<span class="badge">0</span>-->
                 </a>
-                <a class="list-group-item"  @click="changeType('collection')">个人收藏<span class="badge" v-if="userDetail.markPositions">{{userDetail.markPositions.length}}</span></a>
-                <a class="list-group-item"  @click="changeType('box')">投件箱<span class="badge" v-if="userDetail.dropBoxs">{{userDetail.dropBoxs.length}}</span></a>
+                <a class="list-group-item"  @click="changeType('collection')">人才库<span class="badge" v-if="userDetail.markPositions">{{userDetail.markPositions.length}}</span></a>
+                <a class="list-group-item"  @click="changeType('box')">收到的投递<span class="badge" v-if="userDetail.dropBoxs">{{userDetail.dropBoxs.length}}</span></a>
             </div>
 
             <div class="thumbnail">
@@ -407,6 +384,6 @@
     
 </div>
  <script src="/recruit-online/js/commom.js"></script>
-         <script src="/recruit-online/js/user_info.js"></script>
+         <script src="/recruit-online/js/hr/hr_info.js"></script>
 </body>
 </html>

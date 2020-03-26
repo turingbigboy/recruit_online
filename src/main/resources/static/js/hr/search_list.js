@@ -1,9 +1,9 @@
 
 var box = new Vue({
     data: {
-      positions:[],
-      type:"user",
-      user:{},
+      resumes:[],
+      type:null,
+      hr:{},
       orderBy:"salaryUp",
       title:""
     },
@@ -18,25 +18,25 @@ var box = new Vue({
 			  var param = strs[ 0 ].split( "=" )[ 1 ];
 			  var param2 = strs[ 1 ].split( "=" ) [1];
 			  if(param=="sort"){
-				  this.getPositionBySort(param2);
+				  this.getResumeBySort(param2);
 			  }else if(param == "title"){
 				  this.title = decodeURIComponent(param2);
-				  this.getPositionByTitle();
+				  this.getResumeByTitle();
 			  }
 			
 			}else{
-				this.getPostionBySalary();
+				this.getResumeBySalary();
 			}  
     	},
-    	getPositionByTitle:function(){
+    	getResumeByTitle:function(){
     		var self = this;
-			axios.get("/recruit-online/position/title?title="+self.title,{
+			axios.get("/recruit-online/resume/title?title="+self.title,{
         		params:self.SearchParam
 			}
 			).then(function(res){
 				console.log(res);
 				self.orderBy =	"salaryUp";
-				self.positions = res.data.data;   
+				self.resumes = res.data.data;   
 			}).catch(function(err){
 				alert(err);
 			})
@@ -44,75 +44,89 @@ var box = new Vue({
     	,
     	searchlistByTitle:function(tit){
     		this.title = tit;
-    		this.getPositionByTitle();
+    		this.getResumeByTitle();
     	}
     	,
-    	getPositionBySort:function(sortId){
+    	getResumeBySort:function(sortId){
     		var self = this;
-			axios.get("/recruit-online/position/sort/"+sortId,{
+			axios.get("/recruit-online/resume/sort/"+sortId,{
         		params:self.SearchParam
 			}
 			).then(function(res){
 				console.log(res);
-				self.positions = res.data.data;   
+				self.resumes = res.data.data;   
 			}).catch(function(err){
 				alert(err);
 			})
     	},
-    	getPositionById:function(id){
+    	getResumeById:function(id){
 //			var self=this;
-//			axios.get("/recruit-online/position/"+id
+//			axios.get("/recruit-online/resume/"+id
 //			).then(function(res){
 //				console.log(res);
-				location.href="/recruit-online/dist/user/position_detail.html?id="+id;
+				location.href="/recruit-online/dist/hr/resume_detail.html?id="+id;
 //			}).catch(function(err){
 //				alert(err);
 //			})
 		},
-		getPostionByHits:function(){
+		getResumeByHits:function(){
 			var self = this;
-			axios.get("/recruit-online/position?orders=hits&asc=false",{
+			axios.get("/recruit-online/resume?orders=hits&asc=false",{
         		params:self.SearchParam
 			}
 			).then(function(res){
 				console.log(res);
 				self.orderBy =	"hits";
-				self.positions = res.data.data;   
+				self.resumes = res.data.data;   
 			}).catch(function(err){
 				alert(err);
 			})
 		},
-		getPostionByCreateTime:function(){
+		getResumeByCreateTime:function(){
 			var self = this;
-			axios.get("/recruit-online/position?orders=release_date&asc=false",{
+			axios.get("/recruit-online/resume?orders=publish_time&asc=false",{
         		params:self.SearchParam
 			}
 			).then(function(res){
 				console.log(res);
 				self.orderBy =	"releaseDate";
-				self.positions = res.data.data;   
+				self.resumes = res.data.data;   
 			}).catch(function(err){
 				alert(err);
 			})
 		},
-		getPostionBySalary:function(){
+		getResumeBySalary:function(){
 			var self = this;
-			axios.get("/recruit-online/position?orders=salaryUp&asc=false",{
+			axios.get("/recruit-online/resume?orders=salaryUp&asc=false",{
         		params:self.SearchParam
 			}
 			).then(function(res){
 				console.log(res);
 				self.orderBy =	"salaryUp";
-				self.positions = res.data.data; 
+				self.resumes = res.data.data; 
 				
 			}).catch(function(err){
 				alert(err);
 			})
+		},
+		present:function(){
+			var self=this;
+			axios.get("/recruit-online/hr/present"
+			).then(function(res){
+				console.log(res);
+				self.hr = res.data.data;
+				if(self.hr!=null){
+				self.type = "hr";
+				}
+			}).catch(function(err){
+				alert(err);
+		}) 
 		}
     },
 	mixins:[entityMixin]
     ,
     created:function(){	
+    	this.present();
 		this.queryCheck();		
 	}	
 });
@@ -249,7 +263,7 @@ function nextPage() {
             success: function (data) {
 
                 $.each(data.posInfo.list, function (key, val) {
-                    box.positions.push(val);
+                    box.resumes.push(val);
                 });
 
             }, error: function () {

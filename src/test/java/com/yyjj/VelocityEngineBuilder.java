@@ -197,7 +197,7 @@ public class VelocityEngineBuilder {
     private static void init(VelocityInfo info) {
        String path = "C:\\Users\\Administrator\\Documents\\workspace-spring-tool-suite-4-4.0.1.RELEASE\\recruit_online\\src\\main\\java\\com\\yyjj\\service";
 
-      //  createService(info,path);
+        createService(info,path);
 
       //  createAddVO(info, path);
 
@@ -205,13 +205,13 @@ public class VelocityEngineBuilder {
         path = "C:\\Users\\Administrator\\Documents\\workspace-spring-tool-suite-4-4.0.1.RELEASE\\recruit_online\\src\\main\\java\\com\\yyjj\\api\\vo";
 
         createVO(info, path);
-       // path = "C:\\Users\\Administrator\\Documents\\workspace-spring-tool-suite-4-4.0.1.RELEASE\\recruit_online\\src\\main\\java\\com\\yyjj\\api\\controller";
+        path = "C:\\Users\\Administrator\\Documents\\workspace-spring-tool-suite-4-4.0.1.RELEASE\\recruit_online\\src\\main\\java\\com\\yyjj\\api\\controller";
 
-       // createController(info, path);
-       // path = "C:\\Users\\Administrator\\Documents\\workspace-spring-tool-suite-4-4.0.1.RELEASE\\recruit_online\\src\\main\\java\\com\\yyjj\\service\\service\\impl";
+        createController(info, path);
+        path = "C:\\Users\\Administrator\\Documents\\workspace-spring-tool-suite-4-4.0.1.RELEASE\\recruit_online\\src\\main\\java\\com\\yyjj\\service\\service\\impl";
 
-       // createServiceImpl(info, path);
-        //path = "C:\\Users\\Administrator\\Documents\\workspace-spring-tool-suite-4-4.0.1.RELEASE\\recruit_online\\src\\main\\java\\com\\yyjj\\service\\bo";
+        createServiceImpl(info, path);
+        path = "C:\\Users\\Administrator\\Documents\\workspace-spring-tool-suite-4-4.0.1.RELEASE\\recruit_online\\src\\main\\java\\com\\yyjj\\service\\bo";
 
         createBO(info, path);
     }

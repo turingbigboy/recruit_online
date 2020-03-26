@@ -58,7 +58,7 @@ public class UserMakeController {
 	}
 	
 	/**
-	 * 用户是否收藏简历
+	 * 用户是否收藏职位
 	 * @param id Userid
 	 * @return
 	 */
@@ -80,7 +80,7 @@ public class UserMakeController {
 	
 	
 	/**
-	 * 新增简历收藏
+	 * 新增职位收藏
 	 * @param vo
 	 * @return
 	 * 
